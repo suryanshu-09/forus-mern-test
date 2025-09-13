@@ -18,6 +18,7 @@ export const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -35,14 +36,15 @@ export const blogSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
-    body: {
+    content: {
       type: String,
-      required: false,
+      required: true,
     },
     thumbnail: {
       type: Image,
-      required: false,
+      required: true,
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
