@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Blog } from "../db/db";
+import { Blog } from "../db/schema";
 
 export const CreateBlog = async (req: Request, res: Response) => {
   try {
