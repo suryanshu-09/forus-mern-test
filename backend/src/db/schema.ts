@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { IUser } from "../types/user";
 
-export const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
   name: {
     type: String,
     required: true,
@@ -35,7 +36,7 @@ userSchema.methods.comparePasswords = async function (
   return await bcrypt.compare(canditatePassword, this.password);
 };
 
-export const blogSchema = new mongoose.Schema(
+const blogSchema = new mongoose.Schema(
   {
     title: {
       type: String,
