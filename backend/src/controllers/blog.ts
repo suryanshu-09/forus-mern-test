@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 import { Blog } from "../db/schema";
+import { blogInput } from "@suryanshu-09/fe-mern-common";
 
 export const CreateBlog = async (req: Request, res: Response) => {
   try {
+    const { success } = blogInput.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ err: "Invalid input." });
+    }
     const { title, content, thumbnail, userId } = req.body;
 
     const blog = new Blog({ title, content, thumbnail, author: userId });
@@ -41,6 +46,10 @@ export const ReadBlog = async (req: Request, res: Response) => {
 
 export const UpdateBlog = async (req: Request, res: Response) => {
   try {
+    const { success } = blogInput.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ err: "Invalid input." });
+    }
     const { userId } = req.body;
     const blog = await Blog.findOneAndUpdate(
       { _id: req.params.id, author: userId },

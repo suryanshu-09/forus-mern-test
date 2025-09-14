@@ -1,9 +1,18 @@
 import { Request, Response } from "express";
 import { User } from "../db/schema";
 import jwt from "jsonwebtoken";
+import {
+  registerInput,
+  loginInput,
+  deleteInput,
+} from "@suryanshu-09/fe-mern-common";
 
 export const CreateUser = async (req: Request, res: Response) => {
   try {
+    const { success } = registerInput.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ err: "Invalid input." });
+    }
     const { name, email, password } = req.body;
     const user = new User({ name, email, password, blogs: [] });
     await user.save();
@@ -17,6 +26,10 @@ export const CreateUser = async (req: Request, res: Response) => {
 
 export const LoginUser = async (req: Request, res: Response) => {
   try {
+    const { success } = loginInput.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ err: "Invalid input." });
+    }
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePasswords(password))) {
@@ -36,6 +49,10 @@ export const LoginUser = async (req: Request, res: Response) => {
 
 export const DeleteUser = async (req: Request, res: Response) => {
   try {
+    const { success } = deleteInput.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ err: "Invalid input." });
+    }
     const { email, userId } = req.body;
     const user = User.findOneAndDelete({ email, _id: userId });
     if (!user) {

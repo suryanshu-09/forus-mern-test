@@ -10,7 +10,6 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(auth);
 
 const PORT = process.env.PORT || 3001;
 
@@ -23,8 +22,9 @@ mongoose
   });
 
 app.use(cors());
-app.use("/api/posts", blogRouter);
 app.use("/user", userRouter);
+app.use(auth);
+app.use("/api/posts", blogRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on Port: ${PORT}`);
