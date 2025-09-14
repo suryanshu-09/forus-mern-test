@@ -4,11 +4,13 @@ import { blogRouter } from "./routes/blogRoutes";
 import { userRouter } from "./routes/userRoutes";
 import mongoose from "mongoose";
 import cors from "cors";
+import { auth } from "./middleware/auth";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(auth);
 
 const PORT = process.env.PORT || 3001;
 
