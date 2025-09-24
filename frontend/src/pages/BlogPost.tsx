@@ -22,14 +22,11 @@ const BlogPost = () => {
       }
 
       try {
-        const response = await axios.get<{ blogs: BlogType[] }>(
-          "http://localhost:3003/api/posts",
-          {
-            headers: {
-              Authorization: token ?? "",
-            },
+        const response = await axios.get<{ blogs: BlogType[] }>("/api/posts", {
+          headers: {
+            Authorization: token ?? "",
           },
-        );
+        });
 
         const foundBlog = response.data.blogs.find((b) => b._id === id);
         if (foundBlog) {
@@ -56,14 +53,11 @@ const BlogPost = () => {
     const confirmDelete = confirm(`Delete the blog: ${blog.title}?`);
     if (confirmDelete) {
       try {
-        const response = await axios.delete(
-          `http://localhost:3003/api/posts/${blog._id}`,
-          {
-            headers: {
-              Authorization: token,
-            },
+        const response = await axios.delete(`/api/posts/${blog._id}`, {
+          headers: {
+            Authorization: token,
           },
-        );
+        });
 
         if (response.status === 200) {
           navigate("/dashboard");
@@ -190,4 +184,3 @@ const BlogPost = () => {
 };
 
 export default BlogPost;
-

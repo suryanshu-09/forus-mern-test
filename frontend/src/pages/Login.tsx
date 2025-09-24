@@ -37,7 +37,7 @@ export function Login() {
 
     setErrors({});
     try {
-      const res = await axios.post("http://localhost:3003/user/login", {
+      const res = await axios.post("/user/login", {
         email,
         password,
       });

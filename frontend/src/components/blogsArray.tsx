@@ -11,7 +11,7 @@ const BlogsArray = () => {
 
   useEffect(() => {
     axios
-      .get<{ blogs: BlogType[] }>("http://localhost:3003/api/posts", {
+      .get<{ blogs: BlogType[] }>("/api/posts", {
         headers: {
           Authorization: token ?? "",
         },
@@ -68,14 +68,11 @@ const BlogsArray = () => {
                       const del = confirm(`Delete the blog: ${blog.title}`);
                       if (del) {
                         axios
-                          .delete(
-                            `http://localhost:3003/api/posts/${blog._id}`,
-                            {
-                              headers: {
-                                Authorization: token,
-                              },
+                          .delete(`/api/posts/${blog._id}`, {
+                            headers: {
+                              Authorization: token,
                             },
-                          )
+                          })
                           .then((res) => {
                             if (res.status == 200) {
                               window.location.reload();

@@ -5,6 +5,7 @@ import { userRouter } from "./routes/userRoutes";
 import mongoose from "mongoose";
 import cors from "cors";
 import { auth } from "./middleware/auth";
+import path from "path";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
+const __dirname = path.resolve();
 
 mongoose
   .connect(process.env.DB_URL || "")
@@ -21,11 +23,23 @@ mongoose
     process.exit(1);
   });
 
-app.use(cors());
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+    }),
+  );
+}
 app.use("/user", userRouter);
 app.use(auth);
 app.use("/api/posts", blogRouter);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 app.listen(PORT, () => {
   console.log(`Listening on Port: ${PORT}`);
 });

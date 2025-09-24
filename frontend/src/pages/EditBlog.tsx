@@ -31,14 +31,11 @@ const EditBlog = () => {
       }
 
       try {
-        const response = await axios.get<{ blogs: BlogType[] }>(
-          "http://localhost:3003/api/posts",
-          {
-            headers: {
-              Authorization: token ?? "",
-            },
+        const response = await axios.get<{ blogs: BlogType[] }>("/api/posts", {
+          headers: {
+            Authorization: token ?? "",
           },
-        );
+        });
 
         const blog = response.data.blogs.find((b) => b._id === id);
         if (blog) {
@@ -96,15 +93,11 @@ const EditBlog = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.put(
-        `http://localhost:3003/api/posts/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: token ?? "",
-          },
+      const response = await axios.put(`/api/posts/${id}`, formData, {
+        headers: {
+          Authorization: token ?? "",
         },
-      );
+      });
 
       if (response.status === 200) {
         navigate("/dashboard");
@@ -255,4 +248,3 @@ const EditBlog = () => {
 };
 
 export default EditBlog;
-

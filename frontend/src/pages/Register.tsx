@@ -37,7 +37,7 @@ export function Register() {
 
     setErrors({});
     try {
-      const res = await axios.post("http://localhost:3003/user/register", {
+      const res = await axios.post("/user/register", {
         name,
         email,
         password,

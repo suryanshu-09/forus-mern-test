@@ -53,15 +53,11 @@ const CreateBlog = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3003/api/posts",
-        formData,
-        {
-          headers: {
-            Authorization: token ?? "",
-          },
+      const response = await axios.post("/api/posts", formData, {
+        headers: {
+          Authorization: token ?? "",
         },
-      );
+      });
 
       if (response.status === 201) {
         navigate("/dashboard");
@@ -199,4 +195,3 @@ const CreateBlog = () => {
 };
 
 export default CreateBlog;
-

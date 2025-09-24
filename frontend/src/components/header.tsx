@@ -24,7 +24,7 @@ const Header = () => {
     );
     if (confirmDelete && user) {
       try {
-        const response = await axios.delete("http://localhost:3003/api/users", {
+        const response = await axios.delete("/api/users", {
           headers: {
             Authorization: token,
           },
@@ -95,4 +95,3 @@ const Header = () => {
 };
 
 export default Header;
-
