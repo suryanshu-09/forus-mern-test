@@ -4,7 +4,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/header";
 import type { BlogInputType, BlogType } from "@suryanshu-09/fe-mern-common";
 
@@ -128,12 +128,22 @@ const EditBlog = () => {
         <Header />
         <div className="p-6">
           <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">
-                Edit Blog Post
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/dashboard")}
+                  className="mb-4"
+                >
+                  ← Back to Dashboard
+                </Button>
+              </div>
+
+              <div className="mb-6">
+                <h1 className="text-2xl font-bold text-center">
+                  Edit Blog Post
+                </h1>
+              </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="title">Title *</Label>
