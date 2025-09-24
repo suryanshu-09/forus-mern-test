@@ -1,6 +1,6 @@
 {
   "name": "@suryanshu-09/fe-mern-common",
-  "version": "1.0.6",
+  "version": "1.0.14",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
