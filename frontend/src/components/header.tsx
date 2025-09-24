@@ -19,21 +19,16 @@ const Header = () => {
   };
 
   const handleDeleteUser = async () => {
-    const confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    const confirmDelete = confirm(
+      "Are you sure you want to delete your account? This action cannot be undone.",
+    );
     if (confirmDelete && user) {
       try {
-        const response = await axios.delete(
-          "http://localhost:3003/api/users",
-          {
-            headers: {
-              Authorization: token,
-            },
-            data: {
-              email: user.email,
-              userId: user.id,
-            },
-          }
-        );
+        const response = await axios.delete("http://localhost:3003/api/users", {
+          headers: {
+            Authorization: token,
+          },
+        });
 
         if (response.status === 200) {
           alert("Account deleted successfully");
@@ -42,9 +37,8 @@ const Header = () => {
         } else {
           alert("Error deleting account");
         }
-      } catch (error: any) {
-        console.error("Error deleting user:", error);
-        alert(error.response?.data?.err || "Error deleting account");
+      } catch {
+        alert("Error deleting account");
       }
     }
     setIsMenuOpen(false);
@@ -55,7 +49,7 @@ const Header = () => {
       <div>
         <img src={Logo} alt="logo" className="size-16 inline" />
       </div>
-      
+
       <div className="relative">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -75,7 +69,7 @@ const Header = () => {
                 <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-100">
                   {user?.name || "User"}
                 </div>
-                
+
                 <button
                   onClick={handleDeleteUser}
                   className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
@@ -83,7 +77,7 @@ const Header = () => {
                   <RiDeleteBin6Line size={16} />
                   Delete Account
                 </button>
-                
+
                 <button
                   onClick={handleLogout}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors"
@@ -101,3 +95,4 @@ const Header = () => {
 };
 
 export default Header;
+

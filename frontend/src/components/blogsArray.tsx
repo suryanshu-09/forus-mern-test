@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import type { BlogType } from "@suryanshu-09/fe-mern-common";
 import { Button } from "./ui/button";
 
 const BlogsArray = () => {
   const [blogs, setBlogs] = useState<BlogType[]>([]);
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userStr = localStorage.getItem("user");
   const user = userStr ? JSON.parse(userStr) : null;
@@ -25,15 +23,14 @@ const BlogsArray = () => {
   return (
     <div>
       <div className="w-screen flex justify-center">
-        <Button onClick={() => navigate("/create-blog")}>Create Blogs</Button>
+        <Button>Create Blogs</Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {blogs.length > 0 ? (
           blogs.map((blog) => (
             <div
               key={blog._id}
-              className="flex flex-col rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
-              onClick={() => navigate(`/blog/${blog._id}`)}
+              className="flex flex-col rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300"
             >
               <img
                 src={blog.thumbnail}
@@ -58,23 +55,16 @@ const BlogsArray = () => {
                   ))}
                 </div>
                 <div className="text-xs mt-2 text-right opacity-50">
-                  <div>Created at: {new Date(blog.createdAt).toLocaleDateString()}</div>
-                  <div>Modified at: {new Date(blog.updatedAt).toLocaleDateString()}</div>
+                  <div>Created at: {blog.createdAt.toString()}</div>
+                  <div>Modified at: {blog.updatedAt.toString()}</div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-                  <Button 
-                    variant="secondary"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/edit-blog/${blog._id}`);
-                    }}
-                  >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
+                  <Button variant="secondary" className="">
                     Edit
                   </Button>
                   <Button
                     variant="destructive"
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       const del = confirm(`Delete the blog: ${blog.title}`);
                       if (del) {
                         axios
