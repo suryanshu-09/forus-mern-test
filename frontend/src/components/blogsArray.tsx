@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import type { BlogType } from "@suryanshu-09/fe-mern-common";
 import { Button } from "./ui/button";
 
 const BlogsArray = () => {
   const [blogs, setBlogs] = useState<BlogType[]>([]);
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userStr = localStorage.getItem("user");
   const user = userStr ? JSON.parse(userStr) : null;
@@ -23,14 +25,15 @@ const BlogsArray = () => {
   return (
     <div>
       <div className="w-screen flex justify-center">
-        <Button>Create Blogs</Button>
+        <Button onClick={() => navigate("/create-blog")}>Create Blogs</Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {blogs.length > 0 ? (
           blogs.map((blog) => (
             <div
               key={blog._id}
-              className="flex flex-col rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300"
+              className="flex flex-col rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+              onClick={() => navigate(`/blog/${blog._id}`)}
             >
               <img
                 src={blog.thumbnail}
@@ -59,12 +62,19 @@ const BlogsArray = () => {
                   <div>Modified at: {blog.updatedAt.toString()}</div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
-                  <Button variant="secondary" className="">
+                  <Button 
+                    variant="secondary" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/edit-blog/${blog._id}`);
+                    }}
+                  >
                     Edit
                   </Button>
                   <Button
                     variant="destructive"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       const del = confirm(`Delete the blog: ${blog.title}`);
                       if (del) {
                         axios
