@@ -14,7 +14,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@suryanshu-09/fe-mern-common": "^1.0.6",
+    "@suryanshu-09/fe-mern-common": "^1.0.14",
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",

@@ -8,9 +8,11 @@ export const CreateBlog = async (req: Request, res: Response) => {
     if (!success) {
       return res.status(400).json({ err: "Invalid input." });
     }
-    const { title, content, thumbnail, userId } = req.body;
+    const { title, content, thumbnail, tags } = req.body;
 
-    const blog = new Blog({ title, content, thumbnail, author: userId });
+    const userId = (req as any).user.id;
+
+    const blog = new Blog({ title, content, thumbnail, author: userId, tags });
     await blog.save();
     res.status(201).json({ msg: `Blog ${title} uploaded successfully.` });
   } catch (error) {
@@ -22,7 +24,7 @@ export const CreateBlog = async (req: Request, res: Response) => {
 
 export const ReadAllBlogs = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const userId = (req as any).user.id;
 
     const blogs = await Blog.find({ author: userId }).sort({ createdAt: -1 });
 
@@ -34,23 +36,14 @@ export const ReadAllBlogs = async (req: Request, res: Response) => {
   }
 };
 
-export const ReadBlog = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const blog = await Blog.findById(id);
-    res.status(200).json({ blog });
-  } catch (error) {
-    res.status(500).json({ err: "Could not find the blog by that Id." });
-  }
-};
-
 export const UpdateBlog = async (req: Request, res: Response) => {
   try {
     const { success } = blogInput.safeParse(req.body);
     if (!success) {
       return res.status(400).json({ err: "Invalid input." });
     }
-    const { userId } = req.body;
+
+    const userId = (req as any).user.id;
     const blog = await Blog.findOneAndUpdate(
       { _id: req.params.id, author: userId },
       req.body,
@@ -73,10 +66,9 @@ export const UpdateBlog = async (req: Request, res: Response) => {
 
 export const DeleteBlog = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
     const blog = await Blog.findOneAndDelete({
       _id: req.params.id,
-      author: userId,
+      author: (req as any).user.id,
     });
     if (!blog) {
       return res.status(404).json({ err: "Sorry, post not found." });

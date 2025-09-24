@@ -3,24 +3,9 @@ import bcrypt from "bcrypt";
 import { IUser } from "../types/user";
 
 const userSchema = new mongoose.Schema<IUser>({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  blogs: {
-    type: Array<mongoose.Schema.Types.ObjectId>,
-    required: false,
-    ref: "Blog",
-  },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
 userSchema.pre("save", async function (next) {
@@ -31,38 +16,27 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.comparePasswords = async function (
-  canditatePassword: string,
+  candidatePassword: string,
 ) {
-  return await bcrypt.compare(canditatePassword, this.password);
+  return bcrypt.compare(candidatePassword, this.password);
 };
 
 const blogSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-    tags: {
-      type: Array<String>,
-      required: false,
-    },
-    thumbnail: {
-      type: String,
-      required: true,
-    },
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    tags: [{ type: String }],
+    thumbnail: { type: String, required: true },
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "User",
+      required: true,
     },
   },
   { timestamps: true },
 );
 
-export const Blog = mongoose.model("Blog", blogSchema);
+blogSchema.index({ author: 1, title: 1 }, { unique: true });
+
 export const User = mongoose.model("User", userSchema);
+export const Blog = mongoose.model("Blog", blogSchema);
