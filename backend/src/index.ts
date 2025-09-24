@@ -13,7 +13,6 @@ const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
-const __dirname = path.resolve();
 
 mongoose
   .connect(process.env.DB_URL || "")
@@ -30,16 +29,18 @@ if (process.env.NODE_ENV !== "production") {
     }),
   );
 }
-app.use("/user", userRouter);
-app.use(auth);
-app.use("/api/posts", blogRouter);
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+app.use("/user", userRouter);
+app.use("/api/posts", auth, blogRouter);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+  app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "../../frontend", "dist", "index.html"));
   });
 }
+
 app.listen(PORT, () => {
   console.log(`Listening on Port: ${PORT}`);
 });
